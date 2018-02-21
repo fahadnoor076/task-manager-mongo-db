@@ -1,0 +1,8 @@
+{"_id":{"$oid":"59709f318d4da713f00eedad"},"addedAt":"2017-07-18 05:40:59","deletedAt":"","isActive":"1","updatedAt":"","userRoleName":"Super Admin","userRoleSlug":"super-admin"}
+{"_id":{"$oid":"5970a07277ccb60c14000029"},"addedAt":"2017-07-20 17:22:10","deletedAt":"","isActive":"1","updatedAt":"","userRoleName":"Admin","userRoleSlug":"admin"}
+{"_id":{"$oid":"5970a31477ccb60c1400002a"},"addedAt":"2017-07-20 17:33:24","deletedAt":"","isActive":"1","updatedAt":"","userRoleName":"Manager","userRoleSlug":"manager"}
+{"_id":{"$oid":"5970a32577ccb60c1400002b"},"addedAt":"2017-07-20 17:33:41","deletedAt":"","isActive":"1","updatedAt":"","userRoleName":"Team Lead","userRoleSlug":"team_lead"}
+{"_id":{"$oid":"5970a32c77ccb60c1400002c"},"addedAt":"2017-07-20 17:33:48","deletedAt":"","isActive":"1","updatedAt":"","userRoleName":"Vice Team Lead","userRoleSlug":"vice_team_lead"}
+{"_id":{"$oid":"5970a33677ccb60c1400002d"},"addedAt":"2017-07-20 17:33:58","deletedAt":"","isActive":"1","updatedAt":"","userRoleName":"User","userRoleSlug":"user"}
+{"0":"5970a33e77ccb60c1400002e","_id":{"$oid":"5970a33e77ccb60c1400002e"},"addedAt":"2017-07-20 17:34:06","deletedAt":"","isActive":"1","updatedAt":"2017-07-20 18:08:15","userRoleName":"SQA","userRoleSlug":"sqa"}
+{"0":"5970b0fe77ccb60c14000031","_id":{"$oid":"5970b0fe77ccb60c14000031"},"addedAt":"2017-07-20 18:32:46","deletedAt":"2017-07-26 17:16:57","isActive":"0","updatedAt":"2017-07-20 20:45:45","userRoleName":"Junior SQA","userRoleSlug":"junior_sqa"}

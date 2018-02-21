@@ -1,0 +1,4 @@
+{"_id":{"$oid":"597b48bd7d540612d826d0de"},"addedAt":"2017-07-27 05:40:59","deletedAt":"","departmentName":"Logo","departmentSlug":"logo","isActive":"1","updatedAt":""}
+{"0":"597b5e1d77ccb68412000030","_id":{"$oid":"597b5e1d77ccb68412000030"},"addedAt":"2017-07-28 20:54:05","deletedAt":"","departmentName":"Website","departmentSlug":"website","isActive":"1","updatedAt":"2017-07-28 20:58:46"}
+{"_id":{"$oid":"597b5e2b77ccb68412000031"},"addedAt":"2017-07-28 20:54:19","deletedAt":"","departmentName":"Video","departmentSlug":"video","isActive":"1","updatedAt":""}
+{"_id":{"$oid":"597f428277ccb6240c000036"},"addedAt":"2017-07-31 19:45:22","deletedAt":"","departmentName":"Sales","departmentSlug":"sales","isActive":"1","updatedAt":""}

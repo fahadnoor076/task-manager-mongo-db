@@ -1,0 +1,290 @@
+<?php
+
+namespace App\Http\Controllers\Administrator;
+
+use App\Http\Controllers\Controller;
+use Auth;
+use View;
+use DB;
+use Validator;
+use Illuminate\Http\Request;
+use Redirect;
+use Mail;
+// models
+use App\Http\Models\User;
+use App\Http\Models\Admin;
+use App\Http\Models\AdminGroupWidget;
+use App\Http\Models\AdminWidget;
+
+class DashboardController extends Controller {
+	
+	private $_assign_data = array(
+		'p_dir' => DIR_ADMIN,
+		'dir' => 'dashboard/'
+	);	private $_layout = "";
+		// entity vars
+	private $_entity_session_identifier = ADMIN_SESS_KEY;
+	private $_json_data = array();
+
+    /**
+     * Prevent Unauthorized User
+     */
+    public function __construct(Request $request) {
+		//$this->middleware('auth');
+		// construct parent
+		parent::__construct($request);
+		// init models
+		$this->_assign_data["admin_model"] = new Admin;
+		
+		// default nav id
+		$this->_assign_data["active_nav"] = rtrim($this->_assign_data["dir"],"/");
+		// set dir path
+		$this->_assign_data["dir"] = $this->_assign_data["p_dir"].$this->_assign_data["dir"];
+		// set model path for views
+		$this->_assign_data["model_path"] = "App\Http\Models\\";
+		// assign meta from parent constructor
+		$this->_assign_data["_meta"] = $this->__meta;	
+		// check auth
+		$this->_assign_data["admin_model"]->checkAuth($request, strtolower(trim(DIR_ADMIN,"/")));	
+		
+    }
+
+    /**
+     * Return Data to dashboard page
+     * 
+     * @return type 
+     */
+    public function index(Request $request) {
+		// init models
+		$this->_assign_data["admin_group_widget_model"] = new AdminGroupWidget;
+		$this->_assign_data["admin_widget_model"] = new AdminWidget;
+		
+/*
+        if (Auth::user()->admin_id == 1) {
+            $final_data['top_ten_users'] = DB::select('SELECT 
+                                                            u.`user_name`,
+                                                            SUM(ugp.`score`) AS score 
+                                                          FROM
+                                                            `user_game_play` ugp 
+                                                            LEFT JOIN user_games ug 
+                                                              ON ugp.`user_game_id` = ug.`user_game_id` 
+                                                            LEFT JOIN `users` u 
+                                                              ON u.`user_id` = ug.`user_id` 
+                                                          WHERE ugp.`score` != 0 
+                                                          AND u.`user_name` != ""
+                                                          GROUP BY u.`user_id` 
+                                                          ORDER BY score DESC 
+                                                          LIMIT 10  
+                                                        ');
+        } else {
+            $final_data['top_ten_users'] = DB::select('SELECT 
+                                                        u.`user_name`,
+                                                        SUM(ugp.`score`) AS score 
+                                                      FROM
+                                                        `user_game_play` ugp 
+                                                        LEFT JOIN user_games ug 
+                                                          ON ugp.`user_game_id` = ug.`user_game_id` 
+                                                        LEFT JOIN `users` u 
+                                                          ON u.`user_id` = ug.`user_id` 
+                                                      WHERE ugp.`score` != 0
+                                                        AND FIND_IN_SET(
+                                                          u.`user_country`,
+                                                          (SELECT 
+                                                            t.`country_ids` 
+                                                          FROM
+                                                            `territories` t 
+                                                          WHERE t.`territory_id` = "' . $request->user()->territory_id . '")
+                                                        ) 
+                                                      GROUP BY u.`user_id` 
+                                                      ORDER BY score DESC 
+                                                      LIMIT 10 
+                                                    ');
+        }
+
+        if (Auth::user()->admin_id == 1) {
+            $final_data['top_games'] = json_encode(DB::select('SELECT 
+                                                            g.`game_title` AS label,
+                                                            COUNT(ug.`user_game_id`) AS `value`,
+                                                            g.`game_donot_color` AS color,
+                                                            g.`game_donot_highlight` AS highlight 
+                                                          FROM
+                                                            `games` g 
+                                                            LEFT JOIN `user_games` ug 
+                                                              ON ug.`game_id` = g.`game_id` 
+                                                            LEFT JOIN users u 
+                                                              ON u.`user_id` = ug.`user_id` 
+                                                          WHERE g.is_hidden = 0 
+                                                          AND g.`deleted_at` IS NULL 
+                                                          AND ug.`user_game_id` != ""
+                                                          GROUP BY ug.`game_id` 
+                                                        '));
+        } else {
+            $final_data['top_games'] = json_encode(DB::select('SELECT 
+                                                            g.`game_title` AS label,
+                                                            COUNT(ug.`user_game_id`) AS `value`,
+                                                            g.`game_donot_color` AS color,
+                                                            g.`game_donot_highlight` AS highlight 
+                                                          FROM
+                                                            `games` g 
+                                                            LEFT JOIN `user_games` ug 
+                                                              ON ug.`game_id` = g.`game_id` 
+                                                            LEFT JOIN users u 
+                                                              ON u.`user_id` = ug.`user_id` 
+                                                          WHERE g.is_hidden = 0 
+                                                          AND g.`deleted_at` IS NULL 
+                                                          AND ug.`user_game_id` != ""
+                                                            AND FIND_IN_SET(
+                                                              u.`user_country`,
+                                                              (SELECT 
+                                                                t.`country_ids` 
+                                                              FROM
+                                                                `territories` t 
+                                                              WHERE t.`territory_id` = "' . $request->user()->territory_id . '")
+                                                            ) 
+                                                          GROUP BY ug.`game_id` 
+                                                        '));
+        }
+
+
+        $date = strtotime("-10 day");
+        $last_week = date('Y-m-d', $date);
+        $final_data['last_ten_days_user'] = DB::select("SELECT
+                                                        AllDaysYouWant.MyJoinDate AS date,
+                                                        COUNT( U.created_at ) AS total	
+                                                     FROM
+                                                        ( SELECT
+                                                                @curDate := DATE_ADD(@curDate, INTERVAL 1 DAY) AS MyJoinDate
+                                                             FROM
+                                                                ( SELECT @curDate := '$last_week' ) sqlvars,
+                                                                user_games
+                                                             LIMIT 10 ) AllDaysYouWant
+                                                        LEFT JOIN user_games U
+                                                           ON DATE(AllDaysYouWant.MyJoinDate) = DATE(U.created_at)
+                                                     GROUP BY
+                                                        AllDaysYouWant.MyJoinDate ");
+
+
+        foreach ($final_data['last_ten_days_user'] as $week_data) {
+            $final_data['days_lables'][] = $week_data->date;
+            $final_data['user_counter'][] = $week_data->total;
+        }
+		*/
+		
+		
+		// pull flurry data in background - temp (set on cronjob)
+		// open child process
+		$host = $_SERVER['HTTP_HOST'];
+		$r_url = url("/")."/flurry/pull_analytics";
+		$socketcon = @fsockopen($host, 80, $errno, $errstr, 10);
+		if($socketcon) {
+			$socketdata = "GET $r_url HTTP 1.1\r\nHost: $host\r\nConnection: Close\r\n\r\n";
+			@fwrite($socketcon, $socketdata);
+			@fclose($socketcon);
+		}
+		
+		// assign widgets (tiles)
+		$this->_assign_data["widget"]["all"] = $this->_assign_data["admin_group_widget_model"]
+			->select("aw.admin_widget_id AS admin_widget_id")
+			->where("aw.is_active","=",1)
+			->whereNull("aw.deleted_at")
+			->whereNull("agw.deleted_at")
+			->from("admin_widget AS aw")
+			->join("admin_group_widget AS agw","agw.admin_widget_id","=","aw.admin_widget_id")
+			->groupBy("aw.admin_widget_id")
+			->get();
+		
+		// assign widgets (tiles)
+		$this->_assign_data["widget"]["tiles"] = $this->_assign_data["admin_group_widget_model"]
+			->select("aw.admin_widget_id AS admin_widget_id")
+			->where("aw.type","=","tile")
+			->where("aw.is_active","=",1)
+			->whereNull("aw.deleted_at")
+			->whereNull("agw.deleted_at")
+			->from("admin_widget AS aw")
+			->join("admin_group_widget AS agw","agw.admin_widget_id","=","aw.admin_widget_id")
+			->groupBy("aw.admin_widget_id")
+			->get();
+			
+		// assign widgets (charts)
+		$this->_assign_data["widget"]["line_charts"] = $this->_assign_data["admin_group_widget_model"]
+			->select("aw.admin_widget_id AS admin_widget_id")
+			->where("aw.type","=","line_chart")
+			->where("aw.is_active","=",1)
+			->whereNull("aw.deleted_at")
+			->whereNull("agw.deleted_at")
+			->from("admin_widget AS aw")
+			->join("admin_group_widget AS agw","agw.admin_widget_id","=","aw.admin_widget_id")
+			->groupBy("aw.admin_widget_id")
+			->get();
+		
+		// assign widgets (charts)
+		$this->_assign_data["widget"]["bar_charts"] = $this->_assign_data["admin_group_widget_model"]
+			->select("aw.admin_widget_id AS admin_widget_id")
+			->where("aw.type","=","bar_chart")
+			->where("aw.is_active","=",1)
+			->whereNull("aw.deleted_at")
+			->whereNull("agw.deleted_at")
+			->from("admin_widget AS aw")
+			->join("admin_group_widget AS agw","agw.admin_widget_id","=","aw.admin_widget_id")
+			->groupBy("aw.admin_widget_id")
+			->get();
+			
+		// assign widgets (pie charts)
+		$this->_assign_data["widget"]["pie_charts"] = $this->_assign_data["admin_group_widget_model"]
+			->select("aw.admin_widget_id AS admin_widget_id")
+			->where("aw.type","=","pie_chart")
+			->where("aw.is_active","=",1)
+			->whereNull("aw.deleted_at")
+			->whereNull("agw.deleted_at")
+			->from("admin_widget AS aw")
+			->join("admin_group_widget AS agw","agw.admin_widget_id","=","aw.admin_widget_id")
+			->groupBy("aw.admin_widget_id")
+			->get();
+			
+		// assign widgets (donut charts)
+		$this->_assign_data["widget"]["donut_charts"] = $this->_assign_data["admin_group_widget_model"]
+			->select("aw.admin_widget_id AS admin_widget_id")
+			->where("aw.type","=","donut_chart")
+			->where("aw.is_active","=",1)
+			->whereNull("aw.deleted_at")
+			->whereNull("agw.deleted_at")
+			->from("admin_widget AS aw")
+			->join("admin_group_widget AS agw","agw.admin_widget_id","=","aw.admin_widget_id")
+			->groupBy("aw.admin_widget_id")
+			->get();
+			
+		// assign widgets (flot charts)
+		$this->_assign_data["widget"]["flot_charts"] = $this->_assign_data["admin_group_widget_model"]
+			->select("aw.admin_widget_id AS admin_widget_id")
+			->where("aw.type","=","flot_chart")
+			->where("aw.is_active","=",1)
+			->whereNull("aw.deleted_at")
+			->whereNull("agw.deleted_at")
+			->from("admin_widget AS aw")
+			->join("admin_group_widget AS agw","agw.admin_widget_id","=","aw.admin_widget_id")
+			->groupBy("aw.admin_widget_id")
+			->get();
+			
+		// assign widgets (map charts)
+		$this->_assign_data["widget"]["map_charts"] = $this->_assign_data["admin_group_widget_model"]
+			->select("aw.admin_widget_id AS admin_widget_id")
+			->where("aw.type","=","map_chart")
+			->where("aw.is_active","=",1)
+			->whereNull("aw.deleted_at")
+			->whereNull("agw.deleted_at")
+			->from("admin_widget AS aw")
+			->join("admin_group_widget AS agw","agw.admin_widget_id","=","aw.admin_widget_id")
+			->groupBy("aw.admin_widget_id")
+			->get();
+	
+		
+        $view = View::make($this->_assign_data["dir"].__FUNCTION__, $this->_assign_data);
+        return $view;
+    }
+
+    public function reports() {
+        $view = View::make(DIR_ADMIN.'reports');
+        return $view;
+    }
+
+}

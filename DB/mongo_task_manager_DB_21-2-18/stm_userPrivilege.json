@@ -1,0 +1,13 @@
+{"_id":{"$oid":"597ee40bc4631d13bc7fac34"},"addedAt":"2017-07-31 13:00:06","deletedAt":"","isActive":1,"privilegeName":"Project Assign","privilegeSlug":"project-assign","updatedAt":""}
+{"_id":{"$oid":"597ee533c4631d13bc7fac3c"},"addedAt":"2017-07-31 13:00:06","deletedAt":"","isActive":1,"privilegeName":"Project Archive","privilegeSlug":"project-archive","updatedAt":""}
+{"_id":{"$oid":"597ee552c4631d13bc7fac3d"},"addedAt":"2017-07-31 13:00:06","deletedAt":"","isActive":1,"privilegeName":"Project Mark Complete","privilegeSlug":"project-mark-complete","updatedAt":""}
+{"_id":{"$oid":"598b0f9e4b3d1a047426494f"},"addedAt":"2017-08-09 18:35:06","deletedAt":"","isActive":1,"privilegeName":"Project Price","privilegeSlug":"project-price","updatedAt":""}
+{"_id":{"$oid":"599300e88af8cc0e28ed7c7b"},"addedAt":"2017-08-15 19:10:06","deletedAt":"","isActive":1,"privilegeName":"Task Due Date","privilegeSlug":"task-due-date","updatedAt":""}
+{"_id":{"$oid":"59e4ceae91b0da148c60c8fa"},"addedAt":"2017-10-16 20:16:06","deletedAt":"","isActive":1,"privilegeName":"Task Approve","privilegeSlug":"task-approve","updatedAt":""}
+{"_id":{"$oid":"59e4cebb91b0da148c60c8fb"},"addedAt":"2017-10-16 20:16:16","deletedAt":"","isActive":1,"privilegeName":"Task Reject","privilegeSlug":"task-reject","updatedAt":""}
+{"_id":{"$oid":"59e4cef291b0da148c60c8fc"},"addedAt":"2017-10-16 20:19:16","deletedAt":"","isActive":1,"privilegeName":"Task Processed","privilegeSlug":"task-processed","updatedAt":""}
+{"_id":{"$oid":"59e4cf1b91b0da148c60c8fd"},"addedAt":"2017-10-16 20:22:16","deletedAt":"","isActive":1,"privilegeName":"Ask Final Files","privilegeSlug":"ask-final-files","updatedAt":""}
+{"_id":{"$oid":"59e4cf4391b0da148c60c8fe"},"addedAt":"2017-10-16 20:25:05","deletedAt":"","isActive":1,"privilegeName":"Post Design","privilegeSlug":"post-design","updatedAt":""}
+{"_id":{"$oid":"59e4cf6791b0da148c60c8ff"},"addedAt":"2017-10-16 20:27:43","deletedAt":"","isActive":1,"privilegeName":"Task Comment","privilegeSlug":"task-comment","updatedAt":""}
+{"_id":{"$oid":"59e4cf8691b0da148c60c900"},"addedAt":"2017-10-16 20:30:02","deletedAt":"","isActive":1,"privilegeName":"View Designs","privilegeSlug":"view-designs","updatedAt":""}
+{"_id":{"$oid":"59e4d0dd91b0da148c60c901"},"addedAt":"2017-10-16 20:31:52","deletedAt":"","isActive":1,"privilegeName":"Revision Redraw","privilegeSlug":"revision-redraw","updatedAt":""}

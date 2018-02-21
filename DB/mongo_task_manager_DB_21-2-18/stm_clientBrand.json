@@ -1,0 +1,1 @@
+{"_id":{"$oid":"5a8d6d3e3e0b51bc3600003d"},"addedAt":"2018-02-21 17:59:42","deletedAt":"","fkBrandId":{"$oid":"597b6d4777ccb6140b000029"},"fkClientId":{"$oid":"5a8d6ca93e0b51bc36000036"},"isActive":1,"updatedAt":"2018-02-21 17:59:42"}

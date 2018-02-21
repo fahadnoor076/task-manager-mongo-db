@@ -1,0 +1,3 @@
+{"_id":{"$oid":"59806841a9b69b11f8ddc124"},"addedAt":"2017-08-01 14:29:35","deletedAt":"","fkDepartmentId":{"$oid":"597f428277ccb6240c000036"},"isActive":"1","teamName":"Azib Team","teamSlug":"azib-team","updatedAt":"2017-08-01 21:20:10"}
+{"_id":{"$oid":"5980a6c077ccb6a40c000036"},"addedAt":"2017-08-01 21:05:20","deletedAt":"","fkDepartmentId":{"$oid":"597b5e1d77ccb68412000030"},"isActive":"1","teamName":"Shariq Team","teamSlug":"shariq-team","updatedAt":""}
+{"_id":{"$oid":"5981d65777ccb66411000029"},"addedAt":"2017-08-02 18:40:39","deletedAt":"","fkDepartmentId":{"$oid":"597f428277ccb6240c000036"},"isActive":"1","teamName":"Video Jeeves Team","teamSlug":"video-jeeves-team","updatedAt":""}

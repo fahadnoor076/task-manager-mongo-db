@@ -1,0 +1,3 @@
+{"_id":{"$oid":"5981d5a077ccb69411000029"},"addedAt":"2017-08-02 18:37:36","deletedAt":"","fkTeamId":{"$oid":"59806841a9b69b11f8ddc124"},"fkUserId":{"$oid":"5981a1ed77ccb68011000029"},"isLead":1,"updatedAt":""}
+{"_id":{"$oid":"5981d5a077ccb6941100002a"},"addedAt":"2017-08-02 18:37:36","deletedAt":"","fkTeamId":{"$oid":"59806841a9b69b11f8ddc124"},"fkUserId":{"$oid":"5981a21477ccb67411000029"},"isLead":0,"updatedAt":""}
+{"_id":{"$oid":"5981d5a077ccb6941100002b"},"addedAt":"2017-08-02 18:37:36","deletedAt":"","fkTeamId":{"$oid":"59806841a9b69b11f8ddc124"},"fkUserId":{"$oid":"5981a5bf77ccb67011000029"},"isLead":0,"updatedAt":""}

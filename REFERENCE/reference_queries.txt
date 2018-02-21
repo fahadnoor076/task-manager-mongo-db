@@ -1,0 +1,76 @@
+//INSERT
+db.tm_users.insert([{"u_id": db.tm_users.find().count()+1, "u_username": "Fahad Noor", "u_email": "fahad.noor@salsoft.net", "u_password": "Xx@#_Ww-Ooc5f6961af162ef49daabfa0369681468", "is_active": "1"}])
+
+//Create User
+db.stm_user.insert([{"userId": db.stm_user.find().count()+1, "userName": "Ahsan Jawaid", "userPassword": "Xx@#_Ww-Ooc5f6961af162ef49daabfa0369681468", "userEmail": "ahsan.jawaid@salsoft.net", "rememberToken": "", "isActive": "1", "lastLoginAt": "", "isLoggedIn": "", "forgetPasswordHash": "", "forgetPasswordHashCreatedAt": "", "rememberLoginToken": "", "rememberLoginTokenCreatedAt": "", "userContactPersonal": "0000-0000000", "userContactEmergency": "0000-0000000", "userProfileImage": "", "fkRoleId": "", "fkDesignationId": "", "addedAt": "", "updatedAt": "", "deletedAt": "" }])
+
+//Create UserRole
+
+db.stm_userRole.insert([{"userRoleid": db.stm_userROle.find().count()+1, "userRoleName": "Super Admin", "userRoleSlug": "super-admin", "isActive": "1", "addedAt": "2017-07-18 05:40:59", "updatedAt": "", "deletedAt": ""}])
+
+
+//Create UserDesignation
+db.stm_userDesignation.insert([{"userRoleid": db.stm_userDesignation.find().count()+1, "userDesignationName": "Super Admin", "userDesignationSlug": "super-admin", "isActive": "1", "fkRoleId": "1", "addedAt": "2017-07-18 05:46:18", "updatedAt": "", "deletedAt": ""}])
+
+//Create UserModule
+db.stm_userModule.insert([{"parentId": "as4d5as1d23546", "userModuleName": "User", "userModuleSlug": "user", "iconClass": "fa fa-users", "isActive": "1", "showInMenu": "1", "orderId": "0", "addedAt": "2017-07-18 05:40:59", "updatedAt": "", "deletedAt": ""}])
+
+
+//Create UserModulePermission
+db.stm_userModulePermission.insert([{"userDesignationId": "1", "userModuleId": "1", "viewPermission": "1", "addPermission": "1", "updatePermission": "1", "deletePermission": "0", "addedAt": "2017-07-18 05:40:59", "updatedAt": "", "deletedAt": ""}])
+
+
+//MongoDB Join inside the child table
+array('$project' => array("score" => array('$meta' => "textScore"), 'ProductInfo.ProductID' => 1, 'Reviews.Title' => 1, 'Reviews.Content' => 1 , 'Reviews.Overall' => 1, 'Reviews.Author' => 1, '_id' => 0 )
+
+
+
+
+
+
+
+db.stm_projectSegmentTask.aggregate([
+    { "$match": { "deletedAt": "" } },
+    { 
+        "$lookup": { 
+            "from": 'stm_project', 
+            "localField": 'fkProjectId', 
+            "foreignField": '_id', 
+            "as": 'projectArray' 
+        } 
+    },
+    { 
+        "$lookup": { 
+            "from": 'stm_user', 
+            "localField": 'fkCreatedById', 
+            "foreignField": '_id', 
+            "as": 'userArray' 
+        } 
+    },
+    { 
+        "$lookup": { 
+            "from": 'stm_taskUserAssignment', 
+            "localField": '_id', 
+            "foreignField": 'fkTaskId', 
+            "as": 'assignToArray' 
+        } 
+    },
+    {
+        "$addFields": {
+            "assignToArray": {
+                "$arrayElemAt": [
+                    {
+                        "$filter": {
+                            "input": "$assignToArray",
+                            "as": "comp",
+                            "cond": {
+                                "$eq": [ "$$comp.fkUserId", ObjectId("5996b82177ccb6341000003a") ]
+                            }
+                        }
+                    }, 0
+                ]
+            }
+        }
+    },
+    {$unwind:"$assignToArray"}
+])
