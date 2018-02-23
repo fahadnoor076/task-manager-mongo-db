@@ -546,6 +546,9 @@ $(document).ready(function(){
 		departments = JSON.parse(departments);
 		$.each(departments, function(key, value){
 			$('.'+value['departmentSlug']+'Div').css('display', 'none');
+            /*if($('.segmentsInfo').find('.'+value['departmentSlug']+'Div').is(":visible")){
+                $('.'+value['departmentSlug']+'SegmentAmount').val();
+            }*/
 		});
 		var segments = $(this).val();
 		segments = segments.toString();
@@ -561,31 +564,40 @@ $(document).ready(function(){
 			var sgName = departments[sgKey]['departmentSlug'];
 			$('.'+sgName+'Div').css('display', 'block');
 		}
-		
+        $.each(departments, function(key, value){
+            if($('.segmentsInfo').find('.'+value['departmentSlug']+'Div').is(":hidden")){
+                $('.'+value['departmentSlug']+'SegmentAmount').val(0);
+            }
+        });
+        $('.segmentAmount').trigger('blur');
 	});
-	
-	$('.segmentAmount').on('change', function(){
-		var amount = newAmount = parseInt(0);
+	$('.segmentAmount').on('blur', function(){
+		var amount = newAmount = parseFloat(0);
 		var departments = '{!! json_encode($segments); !!}';
 		departments = JSON.parse(departments);
 		$.each(departments, function(key, value){
 			if(value['departmentSlug'] != "sales"){
-				newAmount = $('.'+value['departmentSlug']+'SegmentAmount').val();
+			    if($('.segmentsInfo').find('.'+value['departmentSlug']+'Div').is(":visible")){
+                    newAmount = $('.'+value['departmentSlug']+'SegmentAmount').val();
+                    amount += parseFloat(newAmount);
+                }
 			}
-			amount += parseInt(newAmount);
 		});
 		$('.invoiceTotalAmount').val(amount);
 	});
 	
-	$('.invoicePaidAmount').on('change', function(){
+	$('.invoicePaidAmount').on('blur', function(){
 		$('#error_invoicePaidAmount').html('');
 		var total = $('.invoiceTotalAmount').val();
 		if(total != ""){
-			var paid = $(this).val();
-			if(paid > total){
+			var paid = $('.invoicePaidAmount').val();
+			if(parseInt(paid) > parseInt(total)){
 				$('#error_invoicePaidAmount').html('Total amount should not be less than Paid amount!');
-				return false;
-			}
+				$('#invoiceAdd').find('.btn-success').prop('disabled', true);
+			}else{
+                $('#error_invoicePaidAmount').html('');
+                $('#invoiceAdd').find('.btn-success').prop('disabled', false);
+            }
 		}
 	});
 });

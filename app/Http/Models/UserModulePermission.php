@@ -85,8 +85,7 @@ class UserModulePermission extends Eloquent implements AuthenticatableContract,
 		$paginated_ids = iterator_to_array($cursor);
 		return $paginated_ids;
 	}
-	
-	
+
 	/**
      * Add Record
      * 
@@ -166,6 +165,7 @@ class UserModulePermission extends Eloquent implements AuthenticatableContract,
      * @return boolean (TRUE | FALSE)
      */
     function checkAccess($module, $action, $designationId) {
+
 		$mongo = mongoInitialization();
 		$db = MASTER_DB_NAME;
 		$search_array = array(
@@ -184,7 +184,8 @@ class UserModulePermission extends Eloquent implements AuthenticatableContract,
 		$search_array = array(
 			$action => 1,
 			"fkDesignationId" => new \MongoId($designationId),
-			"fkModuleId" => new \MongoId($moduleId));
+			"fkModuleId" => new \MongoId($moduleId)
+        );
 		$cursor = $mongo->$db->stm_userModulePermission->find($search_array);
 		$record = iterator_to_array($cursor);
 		
@@ -244,6 +245,7 @@ class UserModulePermission extends Eloquent implements AuthenticatableContract,
      * @param int $group_id
      */
     function checkModuleAuth($module, $action, $designationId = 1) {
+
 		if ($this->checkAccess($module, $action, $designationId) === FALSE) {
 			\Session::put(ADMIN_SESS_KEY.'error_msg', 'You are not allowed to access chosen module');
 			\Session::save();

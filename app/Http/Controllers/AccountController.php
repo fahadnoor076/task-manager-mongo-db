@@ -50,7 +50,6 @@ class AccountController extends Controller {
 		// construct parent
 		parent::__construct($request);
 		date_default_timezone_set('Asia/Karachi');
-		
 		// init models
 		$this->_assign_data["clientModel"] = new Client;
 		$this->_assign_data["clientBrandModel"] = new ClientBrand;
@@ -93,7 +92,6 @@ class AccountController extends Controller {
         $this->_assign_data["perm_add"] = $this->_assign_data["userModulePermissionModel"]->checkAccess($this->_module, "add", \Session::get($this->_entity_session_identifier.'auth')->fkDesignationId->{'$id'});
         $this->_assign_data["perm_update"] = $this->_assign_data["userModulePermissionModel"]->checkAccess($this->_module, "update", \Session::get($this->_entity_session_identifier.'auth')->fkDesignationId->{'$id'});
         $this->_assign_data["perm_del"] = $this->_assign_data["userModulePermissionModel"]->checkAccess($this->_module, "delete", \Session::get($this->_entity_session_identifier.'auth')->fkDesignationId->{'$id'});
-		
         $view = View::make($this->_assign_data["dir"].__FUNCTION__, $this->_assign_data);
         return $view;
     }
@@ -161,8 +159,6 @@ class AccountController extends Controller {
         $dg_end = $dg_start + $dg_limit;
         $dg_end = $dg_end > $total_records ? $total_records : $dg_end;
 
-		
-		
         // if records
         if (!empty($paginated_ids)) {
 			$perm_update = $this->_assign_data["userModulePermissionModel"]->checkAccess($this->_module, "update", \Session::get($this->_entity_session_identifier.'auth')->fkDesignationId->{'$id'});
